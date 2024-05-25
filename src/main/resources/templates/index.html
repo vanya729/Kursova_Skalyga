@@ -107,40 +107,6 @@
 
 <div id="message" class="hidden"></div>
 
-<section id="add-product" class="hidden">
-    <h2>Add Product</h2>
-    <form th:action="@{/products/add}" th:object="${product}" method="post">
-        <label for="addName">Name</label>
-        <input type="text" id="addName" th:field="*{name}"/>
-        <label for="addSupplier">Supplier</label>
-        <input type="text" id="addSupplier" th:field="*{supplier}"/>
-        <label for="addDeliveryDate">Delivery Date</label>
-        <input type="date" id="addDeliveryDate" th:field="*{deliveryDate}" th:value="${#dates.format(product.deliveryDate, 'yyyy-MM-dd')}"/>
-        <label for="addExpirationDate">Expiration Date</label>
-        <input type="date" id="addExpirationDate" th:field="*{expirationDate}" th:value="${#dates.format(product.expirationDate, 'yyyy-MM-dd')}"/>
-        <label for="addQuantity">Quantity</label>
-        <input type="number" id="addQuantity" th:field="*{quantity}"/>
-        <label for="addCost">Cost</label>
-        <input type="number" step="0.01" id="addCost" th:field="*{cost}"/>
-        <button type="submit">Add</button>
-    </form>
-</section>
-
-<section id="issue-product" class="hidden">
-    <h2>Issue Product</h2>
-    <form id="issueForm" onsubmit="issueProduct(event)">
-        <label for="issueProductId">Product ID</label>
-        <input type="number" id="issueProductId" required/>
-        <label for="issueQuantity">Quantity</label>
-        <input type="number" id="issueQuantity" required/>
-        <label for="signedBy">Signed By</label>
-        <input type="text" id="signedBy" required/>
-        <label for="receivedBy">Received By</label>
-        <input type="text" id="receivedBy" required/>
-        <button type="submit">Issue</button>
-    </form>
-</section>
-
 <section id="products" class="visible">
     <h2>Products</h2>
     <table>
@@ -168,8 +134,7 @@
             <td>
                 <a href="#" th:onclick="'editProduct(' + ${product.id} + ')'">Edit</a> |
                 <a href="#" th:onclick="'deleteProduct(' + ${product.id} + ')'">Delete</a> |
-                <form th:action="@{/api/deliveries/fromProduct/{productId}(productId=${product.id})}" method="post" style="display:inline;" onsubmit="createDelivery```html
-    (event, this)">
+                <form th:action="@{/api/deliveries/fromProduct/{productId}(productId=${product.id})}" method="post" style="display:inline;" onsubmit="createDelivery(event, this)">
                     <button type="submit">Create Delivery</button>
                 </form>
             </td>
@@ -177,6 +142,67 @@
         </tbody>
     </table>
 </section>
+
+<section id="add-product" class="hidden">
+    <h2>Add Product</h2>
+    <form th:action="@{/products/add}" th:object="${product}" method="post">
+        <label for="addName">Name</label>
+        <input type="text" id="addName" th:field="*{name}"/>
+        <label for="addSupplier">Supplier</label>
+        <input type="text" id="addSupplier" th:field="*{supplier}"/>
+        <label for="addDeliveryDate">Delivery Date</label>
+        <input type="date" id="addDeliveryDate" th:field="*{deliveryDate}" th:value="${#dates.format(product.deliveryDate, 'yyyy-MM-dd')}"/>
+        <label for="addExpirationDate">Expiration Date</label>
+        <input type="date" id="addExpirationDate" th:field="*{expirationDate}" th:value="${#dates.format(product.expirationDate, 'yyyy-MM-dd')}"/>
+        <label for="addQuantity">Quantity</label>
+        <input type="number" id="addQuantity" th:field="*{quantity}"/>
+        <label for="addCost">Cost</label>
+        <input type="number" step="0.01" id="addCost" th:field="*{cost}"/>
+        <button type="submit">Add</button>
+    </form>
+</section>
+
+<section id="edit-product" class="hidden">
+    <h2>Edit Product</h2>
+    <form id="editForm" th:action="@{/products/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
+        <input type="hidden" id="editId" th:field="*{id}"/>
+        <label for="editName">Name</label>
+        <input type="text" id="editName" th:field="*{name}"/>
+        <label for="editSupplier">Supplier</label>
+        <input type="text" id="editSupplier" th:field="*{supplier}"/>
+        <label for="editDeliveryDate">Delivery Date</label>
+        <input type="date" id="editDeliveryDate" th:field="*{deliveryDate}" th:value="${#dates.format(product.deliveryDate, 'yyyy-MM-dd')}"/>
+        <label for="editExpirationDate">Expiration Date</label>
+        <input type="date" id="editExpirationDate" th:field="*{expirationDate}" th:value="${#dates.format(product.expirationDate, 'yyyy-MM-dd')}"/>
+        <label for="editQuantity">Quantity</label>
+        <input type="number" id="editQuantity" th:field="*{quantity}"/>
+        <label for="editCost">Cost</label>
+        <input type="number" step="0.01" id="editCost" th:field="*{cost}"/>
+        <button type="submit">Save</button>
+    </form>
+</section>
+
+<section id="issue-product" class="hidden">
+    <h2>Issue Product</h2>
+    <form id="issueForm" onsubmit="issueProduct(event)">
+        <label for="issueProductId">Product ID</label>
+        <input type="number" id="issueProductId" required/>
+        <label for="issueQuantity">Quantity</label>
+        <input type="number" id="issueQuantity" required/>
+        <label for="signedBy">Signed By</label>
+        <input type="text" id="signedBy" required/>
+        <label for="receivedBy">Received By</label>
+        <input type="text" id="receivedBy" required/>
+        <button type="submit">Issue</button>
+    </form>
+</section>
+<!-- Modal for delivery messages -->
+<div id="deliveryModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="deliveryMessage"></p>
+    </div>
+</div>
 
 <script>
     function showSection(sectionId) {
@@ -276,4 +302,4 @@
     }
 </script>
 </body>
-</html>
+</html></html>

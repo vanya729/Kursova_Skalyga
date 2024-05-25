@@ -45,7 +45,6 @@ public class ProductController {
         return "redirect:/products";
     }
 
-
     @DeleteMapping("/delete/{id}")
     @ResponseBody
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
@@ -53,4 +52,5 @@ public class ProductController {
         productRepository.delete(product);
         return ResponseEntity.ok().build();
     }
+
 }

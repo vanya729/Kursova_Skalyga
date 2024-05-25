@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,4 +27,5 @@ public class Product {
 
     private Integer quantity;
     private Double cost;
+
 }
