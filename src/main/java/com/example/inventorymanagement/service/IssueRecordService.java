@@ -18,7 +18,7 @@ public class IssueRecordService {
     @Autowired
     private IssueRecordRepository issueRecordRepository;
 
-    public void issueProduct(Long productId, int quantity, String signedBy) {
+    public void issueProduct(Long productId, int quantity, String signedBy, String receivedBy) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
@@ -31,8 +31,10 @@ public class IssueRecordService {
 
         IssueRecord issueRecord = new IssueRecord();
         issueRecord.setProduct(product);
+        issueRecord.setProductName(product.getName());
         issueRecord.setQuantity(quantity);
         issueRecord.setSignedBy(signedBy);
+        issueRecord.setReceivedBy(receivedBy);
         issueRecord.setIssueDate(new Date());
 
         issueRecordRepository.save(issueRecord);

@@ -15,9 +15,10 @@ public class IssueRecordController {
     @PostMapping("/issue")
     public ResponseEntity<String> issueProduct(@RequestParam Long productId,
                                                @RequestParam int quantity,
-                                               @RequestParam String signedBy) {
+                                               @RequestParam String signedBy,
+                                               @RequestParam String receivedBy) {
         try {
-            issueRecordService.issueProduct(productId, quantity, signedBy);
+            issueRecordService.issueProduct(productId, quantity, signedBy, receivedBy);
             return ResponseEntity.ok("Product issued successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

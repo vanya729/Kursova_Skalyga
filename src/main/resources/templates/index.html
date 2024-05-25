@@ -181,10 +181,11 @@
         <input type="number" id="issueQuantity" required/>
         <label for="signedBy">Signed By</label>
         <input type="text" id="signedBy" required/>
+        <label for="receivedBy">Received By</label>
+        <input type="text" id="receivedBy" required/>
         <button type="submit">Issue</button>
     </form>
 </section>
-
 <!-- Modal for delivery messages -->
 <div id="deliveryModal" class="modal">
     <div class="modal-content">
@@ -227,10 +228,10 @@
         event.preventDefault();
         const productId = document.getElementById('issueProductId').value;
         const quantity = document.getElementById('issueQuantity').value;
-
         const signedBy = document.getElementById('signedBy').value;
+        const receivedBy = document.getElementById('receivedBy').value;
 
-        fetch(`/api/issueRecords/issue?productId=${productId}&quantity=${quantity}&signedBy=${signedBy}`, {
+        fetch(`/api/issueRecords/issue?productId=${productId}&quantity=${quantity}&signedBy=${signedBy}&receivedBy=${receivedBy}`, {
             method: 'POST'
         })
             .then(response => {
