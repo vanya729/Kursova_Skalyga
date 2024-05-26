@@ -35,14 +35,14 @@ public class ProductController {
     @PostMapping("/add")
     public String addProduct(@ModelAttribute Product product) {
         productRepository.save(product);
-        return "redirect:/products";
+        return "redirect:/";
     }
 
     @PostMapping("/edit/{id}")
     public String editProduct(@PathVariable Long id, @ModelAttribute Product product) {
         product.setId(id);
         productRepository.save(product);
-        return "redirect:/products";
+        return "redirect:/";
     }
 
     @DeleteMapping("/delete/{id}")
@@ -52,5 +52,4 @@ public class ProductController {
         productRepository.delete(product);
         return ResponseEntity.ok().build();
     }
-
 }
