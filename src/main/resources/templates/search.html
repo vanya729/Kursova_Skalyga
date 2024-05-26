@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        nav {
+            background-color: #007BFF;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #ddd;
+        }
+        section {
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #007BFF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="date"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        .alert-success {
+            color: green;
+        }
+        .alert-danger {
+            color: red;
+        }
+        .visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/products" th:href="@{/}">Home</a>
+    <a href="/search" th:href="@{/search}">Search</a>
+</nav>
+<section>
+    <h1>Search Products</h1>
+    <form action="#" th:action="@{/search/results}" method="post">
+        <label for="id">ID</label>
+        <input type="text" name="id" placeholder="ID"/>
+        <label for="name">Name</label>
+        <input type="text" name="name" placeholder="Name"/>
+        <label for="supplier">Supplier</label>
+        <input type="text" name="supplier" placeholder="Supplier"/>
+        <label for="deliveryDate">Delivery Date</label>
+        <input type="date" name="deliveryDate" placeholder="Delivery Date"/>
+        <button type="submit">Search</button>
+    </form>
+
+    <div th:if="${results != null}">
+        <h2>Search Results</h2>
+        <ul>
+            <li th:each="product : ${results}">
+                <span th:text="${product.id}">ID</span> -
+                <span th:text="${product.name}">Name</span> -
+                <span th:text="${product.supplier}">Supplier</span> -
+                <span th:text="${product.deliveryDate}">Delivery Date</span>
+            </li>
+        </ul>
+    </div>
+</section>
+</body>
+</html>

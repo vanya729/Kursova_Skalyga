@@ -97,15 +97,136 @@
         }
     </style>
 </head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inventory Management</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        nav {
+            background-color: #007BFF;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #ddd;
+        }
+        section {
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #007BFF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="date"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        .alert-success {
+            color: green;
+        }
+        .alert-danger {
+            color: red;
+        }
+        .visible {
+            display: block;
+        }
+    </style>
+</head>
 <body>
 <h1>Inventory Management</h1>
 <nav>
-    <a href="#" onclick="showSection('products')">Products</a> |
+    <a href="/products" onclick="showSection('products')">Products</a> |
     <a href="#" onclick="showSection('add-product')">Add Product</a> |
     <a href="#" onclick="showSection('issue-product')">Issue Product</a>
 </nav>
 
 <div id="message" class="hidden"></div>
+
+<form th:action="@{/search/results}" method="post">
+    <input type="text" name="id" placeholder="Product ID">
+    <input type="text" name="name" placeholder="Product Name">
+    <input type="text" name="supplier" placeholder="Supplier">
+    <input type="date" name="deliveryDate" placeholder="Delivery Date">
+    <button type="submit">Search</button>
+</form>
+<div>
+    <h2>Search Results</h2>
+    <ul>
+        <li th:each="product : ${results}">
+            <span th:text="${product.id}"></span> -
+            <span th:text="${product.name}"></span> -
+            <span th:text="${product.supplier}"></span> -
+            <span th:text="${product.deliveryDate}"></span>
+        </li>
+    </ul>
+</div>
+
+
+
 
 <section id="products" class="visible">
     <h2>Products</h2>
@@ -196,10 +317,11 @@
         <button type="submit">Issue</button>
     </form>
 </section>
+
 <!-- Modal for delivery messages -->
-<div id="deliveryModal" class="modal">
+<div id="deliveryModal" class="modal hidden">
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" onclick="closeModal()">&times;</span>
         <p id="deliveryMessage"></p>
     </div>
 </div>
@@ -282,7 +404,6 @@
             })
             .catch(error => console.error('Error fetching product:', error));
     }
-
     function deleteProduct(productId) {
         if (confirm('Are you sure you want to delete this product?')) {
             fetch(`/products/delete/${productId}`, {
